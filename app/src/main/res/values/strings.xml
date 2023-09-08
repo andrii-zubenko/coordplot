@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Coordplot</string>
     <string name="cursor_icon_desc">screen cursor</string>
     <string name="slider_axis_value">%1$s Axis: %2$d%%</string>
     <string name="x_label">X</string>
