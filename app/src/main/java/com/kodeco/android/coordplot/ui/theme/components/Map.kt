@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot
+package com.kodeco.android.coordplot.ui.theme.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kodeco.android.coordplot.R
+import com.kodeco.android.coordplot.ui.theme.Grey
 import com.kodeco.android.coordplot.ui.theme.MyApplicationTheme
 
 @Composable
@@ -24,7 +25,7 @@ fun Map(
         modifier = Modifier
             .padding(18.dp)
             .size(300.dp)
-            .background(Color.LightGray)
+            .background(Grey)
     ) {
         Image(
             painter = painterResource(id = R.drawable.cursor_icon),
