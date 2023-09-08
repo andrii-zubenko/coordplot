@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.ui.theme.MyApplicationTheme
+import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.utils.toIntPercentage
 
 @Composable
@@ -88,17 +88,10 @@ fun PlotSurface(screenOrientation: Int) {
 }
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, device = Devices.AUTOMOTIVE_1024p, widthDp = 864, heightDp = 432)
 @Composable
-fun PlotSurfacePreviewPortrait() {
-    MyApplicationTheme {
+fun PlotSurfacePreview() {
+    CoordPlotTheme {
         PlotSurface(Configuration.ORIENTATION_PORTRAIT)
-    }
-}
-
-@Preview(showBackground = true,device = Devices.AUTOMOTIVE_1024p, widthDp = 864, heightDp = 432)
-@Composable
-fun PlotSurfacePreviewLandscape() {
-    MyApplicationTheme {
-        PlotSurface(Configuration.ORIENTATION_LANDSCAPE)
     }
 }

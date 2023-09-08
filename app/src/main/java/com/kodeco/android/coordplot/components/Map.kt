@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.ui.theme.Grey
-import com.kodeco.android.coordplot.ui.theme.MyApplicationTheme
+import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 
 @Composable
 fun Map(
@@ -43,7 +43,7 @@ fun Map(
 @Preview(showBackground = true)
 @Composable
 fun MapPreview() {
-    MyApplicationTheme {
+    CoordPlotTheme {
         Map(xPercent = 0.5f, yPercent = 0.5f)
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.kodeco.android.coordplot.ui.theme.MyApplicationTheme
+import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
+            CoordPlotTheme {
                 MainScreen()
             }
         }
