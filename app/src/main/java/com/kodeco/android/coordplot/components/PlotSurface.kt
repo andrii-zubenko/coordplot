@@ -88,10 +88,17 @@ fun PlotSurface(screenOrientation: Int) {
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, device = Devices.AUTOMOTIVE_1024p, widthDp = 864, heightDp = 432)
 @Composable
-fun PlotSurfacePreview() {
+fun PlotSurfacePreviewPortrait() {
     CoordPlotTheme {
         PlotSurface(Configuration.ORIENTATION_PORTRAIT)
+    }
+}
+
+@Preview(showBackground = true, device = Devices.AUTOMOTIVE_1024p, widthDp = 864, heightDp = 432)
+@Composable
+fun PlotSurfacePreviewLandscape() {
+    CoordPlotTheme {
+        PlotSurface(Configuration.ORIENTATION_LANDSCAPE)
     }
 }
