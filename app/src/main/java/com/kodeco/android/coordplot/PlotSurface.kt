@@ -35,7 +35,7 @@ fun PlotSurface() {
             onValueChanged = { xFloatValue = it },
             text = stringResource(
                 id = R.string.slider_axis_value,
-                stringResource(R.string.x),
+                stringResource(R.string.x_label),
                 xFloatValue.toIntPercentage()
             )
         )
@@ -44,7 +44,7 @@ fun PlotSurface() {
             onValueChanged = { yFloatValue = it },
             text = stringResource(
                 id = R.string.slider_axis_value,
-                stringResource(R.string.y),
+                stringResource(R.string.y_label),
                 yFloatValue.toIntPercentage()
             )
         )
