@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.ui.theme.components
+package com.kodeco.android.coordplot.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

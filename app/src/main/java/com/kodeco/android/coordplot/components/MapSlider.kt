@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.ui.theme.components
+package com.kodeco.android.coordplot.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
