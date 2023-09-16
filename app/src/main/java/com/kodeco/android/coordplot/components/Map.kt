@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,7 +26,7 @@ fun Map(
         modifier = Modifier
             .padding(18.dp)
             .size(300.dp)
-            .background(Grey)
+            .background(MaterialTheme.colorScheme.secondary)
     ) {
         Image(
             painter = painterResource(id = R.drawable.cursor_icon),

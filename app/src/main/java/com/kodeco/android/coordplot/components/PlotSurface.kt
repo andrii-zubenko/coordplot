@@ -37,7 +37,7 @@ fun PlotSurface(screenOrientation: Int) {
             Map(xPercent = xFloatValue, yPercent = yFloatValue)
             MapSlider(
                 floatValue = xFloatValue,
-                onValueChanged = { xFloatValue = it },
+                onPercentageChanged = { xFloatValue = it },
                 text = stringResource(
                     id = R.string.slider_axis_value,
                     stringResource(R.string.x_label),
@@ -46,7 +46,7 @@ fun PlotSurface(screenOrientation: Int) {
             )
             MapSlider(
                 floatValue = yFloatValue,
-                onValueChanged = { yFloatValue = it },
+                onPercentageChanged = { yFloatValue = it },
                 text = stringResource(
                     id = R.string.slider_axis_value,
                     stringResource(R.string.y_label),
@@ -66,7 +66,7 @@ fun PlotSurface(screenOrientation: Int) {
             Column {
                 MapSlider(
                     floatValue = xFloatValue,
-                    onValueChanged = { xFloatValue = it },
+                    onPercentageChanged = { xFloatValue = it },
                     text = stringResource(
                         id = R.string.slider_axis_value,
                         stringResource(R.string.x_label),
@@ -75,7 +75,7 @@ fun PlotSurface(screenOrientation: Int) {
                 )
                 MapSlider(
                     floatValue = yFloatValue,
-                    onValueChanged = { yFloatValue = it },
+                    onPercentageChanged = { yFloatValue = it },
                     text = stringResource(
                         id = R.string.slider_axis_value,
                         stringResource(R.string.y_label),

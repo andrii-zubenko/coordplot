@@ -17,7 +17,7 @@ import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 @Composable
 fun MapSlider(
     floatValue: Float,
-    onValueChanged: (Float) -> Unit,
+    onPercentageChanged: (Float) -> Unit,
     text: String
 ) {
     Row(
@@ -31,7 +31,7 @@ fun MapSlider(
             .width(120.dp))
         Slider(
             value = floatValue,
-            onValueChange = onValueChanged
+            onValueChange = onPercentageChanged
         )
     }
 }
@@ -40,6 +40,6 @@ fun MapSlider(
 @Composable
 fun MapSliderPreview() {
     CoordPlotTheme {
-        MapSlider(floatValue = 0.5f, onValueChanged = {}, text = "Slider desc")
+        MapSlider(floatValue = 0.5f, onPercentageChanged = {}, text = "Slider desc")
     }
 }
