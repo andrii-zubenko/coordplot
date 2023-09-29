@@ -14,6 +14,11 @@ import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
+
+    val mainScreen = "mainscreen"
+    val coordPlot = "coordplot"
+    val countryInfo = "country_info"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -22,17 +27,17 @@ class MainActivity : ComponentActivity() {
             CoordPlotTheme {
                 val configuration = LocalConfiguration.current
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "mainscreen") {
-                    composable("mainscreen") {
+                NavHost(navController = navController, startDestination = mainScreen) {
+                    composable(mainScreen) {
                         MainScreen(
-                            onNavigateToCoordPlot = { navController.navigate("coordplot") },
-                            onNavigateToCountryInfo = { navController.navigate("country_info") }
+                            onNavigateToCoordPlot = { navController.navigate(coordPlot) },
+                            onNavigateToCountryInfo = { navController.navigate(countryInfo) }
                         )
                     }
-                    composable("coordplot") {
+                    composable(coordPlot) {
                         PlotSurface(configuration.orientation)
                     }
-                    composable("country_info") {
+                    composable(countryInfo) {
                         CountryInfo()
                     }
                 }
