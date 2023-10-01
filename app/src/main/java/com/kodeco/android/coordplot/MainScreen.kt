@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.screens
+package com.kodeco.android.coordplot
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 
 @Composable
