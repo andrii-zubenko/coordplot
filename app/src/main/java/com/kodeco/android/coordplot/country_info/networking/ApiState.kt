@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 sealed class ApiState : Parcelable {
-    class Success(val data: List<Country>) : ApiState()
+    data object Success : ApiState()
     data object Failure : ApiState()
-    object Loading : ApiState()
-    object Empty : ApiState()
+    data object Loading : ApiState()
+    data object Empty : ApiState()
 }

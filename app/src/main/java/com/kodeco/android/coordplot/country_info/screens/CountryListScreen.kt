@@ -16,12 +16,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.kodeco.android.coordplot.country_info.components.CountryList
+import com.kodeco.android.coordplot.country_info.data
 import com.kodeco.android.coordplot.country_info.networking.ApiState
 import com.kodeco.android.coordplot.country_info.networking.apiService
+import kotlinx.coroutines.delay
 
 @Composable
-fun CountryInfoScreen(onNavigateToCountryDetailsScreen: () -> Unit) {
+fun CountryInfoScreen(navigation: NavController) {
     val TAG = "CountryListScreen"
     var apiState by rememberSaveable { mutableStateOf<ApiState>(ApiState.Empty) }
 
@@ -30,11 +33,11 @@ fun CountryInfoScreen(onNavigateToCountryDetailsScreen: () -> Unit) {
             apiState = ApiState.Loading
             val countriesResponse = apiService.getAllCountries()
             // Simulate a network delay
-//            delay(5000L)
+            delay(5000L)
 
             apiState = if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
-                val countryList = countriesResponse.body()?.toList() ?: emptyList()
-                ApiState.Success(countryList)
+                data = countriesResponse.body()?.toList() ?: emptyList()
+                ApiState.Success
             } else {
                 Log.e(TAG, "Error: ${countriesResponse.message()}")
                 ApiState.Failure
@@ -43,14 +46,13 @@ fun CountryInfoScreen(onNavigateToCountryDetailsScreen: () -> Unit) {
             Log.e(TAG, "Error: $e")
             ApiState.Failure
         }
-
     }
 
-    when (val state = apiState) {
+    when (apiState) {
         is ApiState.Success -> {
             CountryList(
-                countries = state.data,
-                onNavigateToCountryDetailsScreen = onNavigateToCountryDetailsScreen
+                countries = data,
+                navigation = navigation
             )
         }
 

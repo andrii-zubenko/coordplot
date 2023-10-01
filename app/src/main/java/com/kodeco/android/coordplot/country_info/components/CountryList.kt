@@ -11,12 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
 
 @Composable
-fun CountryList(countries: List<Country>, onNavigateToCountryDetailsScreen: () -> Unit) {
+fun CountryList(countries: List<Country>, navigation: NavController?) {
     LazyColumn {
         items(countries.size) { index ->
             Card(
@@ -26,7 +27,7 @@ fun CountryList(countries: List<Country>, onNavigateToCountryDetailsScreen: () -
                         horizontal = 8.dp,
                         vertical = 8.dp
                     )
-                    .clickable { onNavigateToCountryDetailsScreen() },
+                    .clickable { navigation?.navigate("country_details/$index") },
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
@@ -61,6 +62,6 @@ fun PreviewCountryList() {
                 area = 9984670.0,
                 flags = CountryFlags("")
             )
-        ), onNavigateToCountryDetailsScreen = {}
+        ), navigation = null
     )
 }
