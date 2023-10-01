@@ -17,8 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kodeco.android.coordplot.country_info.CountryListData
+import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.components.CountryList
-import com.kodeco.android.coordplot.country_info.data
 import com.kodeco.android.coordplot.country_info.networking.ApiState
 import com.kodeco.android.coordplot.country_info.networking.apiService
 import kotlinx.coroutines.delay
@@ -36,7 +37,7 @@ fun CountryInfoScreen(navigation: NavController) {
             delay(5000L)
 
             apiState = if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
-                data = countriesResponse.body()?.toList() ?: emptyList()
+                CountryListData.setData(countriesResponse.body()?.toList() ?: emptyList())
                 ApiState.Success
             } else {
                 Log.e(TAG, "Error: ${countriesResponse.message()}")

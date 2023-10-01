@@ -14,7 +14,7 @@ import com.kodeco.android.coordplot.country_info.screens.CountryInfoScreen
 import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.screens.MainScreen
 import com.kodeco.android.coordplot.coordplotter.screens.PlotSurface
-import com.kodeco.android.coordplot.country_info.data
+import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.screens.CountryDetailsScreen
 
 class MainActivity : ComponentActivity() {
