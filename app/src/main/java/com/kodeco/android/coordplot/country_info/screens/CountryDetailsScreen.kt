@@ -54,7 +54,7 @@ fun CountryDetailsScreen(countryData: List<Country>, countryIndex: Int, onBackCl
                 DetailItem("Area", countryData[countryIndex].area.toString())
                 AsyncImage(
                     model = countryData[countryIndex].flags.png,
-                    contentDescription = "Country Flag",
+                    contentDescription = stringResource(R.string.country_flag),
                 )
             }
         }

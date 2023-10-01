@@ -15,8 +15,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.CountryListData
 import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.components.CountryList
@@ -62,7 +64,7 @@ fun CountryInfoScreen(navigation: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Oops! Something is not right :(")
+                Text(text = stringResource(R.string.oops_something_is_not_right))
             }
         }
 
