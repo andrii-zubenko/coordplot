@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.components
+package com.kodeco.android.coordplot.coordplotter.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
+import com.kodeco.android.coordplot.coordplotter.components.Map
+import com.kodeco.android.coordplot.coordplotter.components.MapSlider
 import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.utils.toIntPercentage
 

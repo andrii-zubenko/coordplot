@@ -5,4 +5,6 @@
     <string name="x_label">X</string>
     <string name="y_label">Y</string>
     <string name="country_info">Country Information</string>
+    <string name="back_button">Back Button</string>
+    <string name="flag_image">Flag Image</string>
 </resources>
