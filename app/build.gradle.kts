@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -72,4 +73,20 @@ dependencies {
     implementation(libs.bundles.compose.ui)
     implementation(libs.bundles.androidx.activity)
     implementation(libs.fonts)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.coil)
+
+    ksp (libs.moshiCodeGen)
+
+    testImplementation(libs.junit)
+
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }
