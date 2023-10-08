@@ -22,37 +22,27 @@ import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.CountryListData
 import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.components.CountryList
+import com.kodeco.android.coordplot.country_info.networking.ApiService
 import com.kodeco.android.coordplot.country_info.networking.ApiState
 import com.kodeco.android.coordplot.country_info.networking.apiService
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+
+const val TAG = "CountryListScreen"
 
 @Composable
 fun CountryInfoScreen(navigation: NavController) {
-    val TAG = "CountryListScreen"
+
     var apiState by rememberSaveable { mutableStateOf<ApiState>(ApiState.Empty) }
 
     LaunchedEffect(Unit) {
         if (data.isNotEmpty()) {
-            apiState = ApiState.Success
             return@LaunchedEffect
         }
-        
-        try {
-            apiState = ApiState.Loading
-            val countriesResponse = apiService.getAllCountries()
-            // Simulate a network delay
-            delay(2000L)
-
-            apiState = if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
-                CountryListData.setData(countriesResponse.body()?.toList() ?: emptyList())
-                ApiState.Success
-            } else {
-                Log.e(TAG, "Error: ${countriesResponse.message()}")
-                ApiState.Failure
-            }
-        } catch (e: Throwable) {
-            Log.e(TAG, "Error: $e")
-            ApiState.Failure
+        getCountryInfoFlow(apiService).collect { currentApiState ->
+            apiState = currentApiState
         }
     }
 
@@ -90,4 +80,22 @@ fun CountryInfoScreen(navigation: NavController) {
 
         }
     }
+}
+
+private fun getCountryInfoFlow(apiService: ApiService): Flow<ApiState> = flow {
+    emit(ApiState.Loading)
+    val countriesResponse = apiService.getAllCountries()
+    // Simulate a network delay
+    delay(2000L)
+
+    if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
+        CountryListData.setData(countriesResponse.body()?.toList() ?: emptyList())
+        emit(ApiState.Success)
+    } else {
+        Log.e(TAG, "Error: ${countriesResponse.message()}")
+        emit(ApiState.Failure)
+    }
+}.catch {
+    Log.e(TAG, "Error: ${it.message}")
+    emit(ApiState.Failure)
 }
