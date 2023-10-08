@@ -23,7 +23,7 @@ import com.kodeco.android.coordplot.country_info.CountryListData
 import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.components.CountryList
 import com.kodeco.android.coordplot.country_info.networking.ApiService
-import com.kodeco.android.coordplot.country_info.networking.ApiState
+import com.kodeco.android.coordplot.country_info.networking.CountryInfoState
 import com.kodeco.android.coordplot.country_info.networking.apiService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -33,29 +33,36 @@ import kotlinx.coroutines.flow.flow
 const val TAG = "CountryListScreen"
 
 @Composable
-fun CountryInfoScreen(navigation: NavController) {
+fun CountryInfoScreen(
+    navigation: NavController,
+    countersTopBar: @Composable () -> Unit
+) {
 
-    var apiState by rememberSaveable { mutableStateOf<ApiState>(ApiState.Empty) }
+    var countryInfoState by rememberSaveable { mutableStateOf<CountryInfoState>(CountryInfoState.Loading) }
 
     LaunchedEffect(Unit) {
+
         if (data.isNotEmpty()) {
+            countryInfoState = CountryInfoState.Success
             return@LaunchedEffect
         }
-        getCountryInfoFlow(apiService).collect { currentApiState ->
-            apiState = currentApiState
+
+        getCountryInfoFlow(apiService).collect { currentCountryInfoState ->
+            countryInfoState = currentCountryInfoState
         }
+
     }
 
-
-    when (apiState) {
-        is ApiState.Success -> {
+    when (countryInfoState) {
+        is CountryInfoState.Success -> {
             CountryList(
                 countries = data,
-                navigation = navigation
+                navigation = navigation,
+                countersTopBar = { countersTopBar() }
             )
         }
 
-        is ApiState.Failure -> {
+        is CountryInfoState.Failure -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -64,7 +71,7 @@ fun CountryInfoScreen(navigation: NavController) {
             }
         }
 
-        ApiState.Loading -> {
+        CountryInfoState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -75,27 +82,23 @@ fun CountryInfoScreen(navigation: NavController) {
                 )
             }
         }
-
-        ApiState.Empty -> {
-
-        }
     }
 }
 
-private fun getCountryInfoFlow(apiService: ApiService): Flow<ApiState> = flow {
-    emit(ApiState.Loading)
+private fun getCountryInfoFlow(apiService: ApiService): Flow<CountryInfoState> = flow {
+    emit(CountryInfoState.Loading)
     val countriesResponse = apiService.getAllCountries()
     // Simulate a network delay
     delay(2000L)
 
     if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
         CountryListData.setData(countriesResponse.body()?.toList() ?: emptyList())
-        emit(ApiState.Success)
+        emit(CountryInfoState.Success)
     } else {
         Log.e(TAG, "Error: ${countriesResponse.message()}")
-        emit(ApiState.Failure)
+        emit(CountryInfoState.Failure)
     }
 }.catch {
     Log.e(TAG, "Error: ${it.message}")
-    emit(ApiState.Failure)
+    emit(CountryInfoState.Failure)
 }
