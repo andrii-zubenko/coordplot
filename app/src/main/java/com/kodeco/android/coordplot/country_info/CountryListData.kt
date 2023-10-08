@@ -9,4 +9,6 @@ object CountryListData {
     fun setData(newData: List<Country>) {
         data = newData
     }
+
+    var dataNeedsRefreshing = false
 }

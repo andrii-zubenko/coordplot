@@ -2,15 +2,10 @@ package com.kodeco.android.coordplot.country_info.screens
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,6 +17,7 @@ import androidx.navigation.NavController
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.CountryListData
 import com.kodeco.android.coordplot.country_info.CountryListData.data
+import com.kodeco.android.coordplot.country_info.CountryListData.dataNeedsRefreshing
 import com.kodeco.android.coordplot.country_info.components.CountryList
 import com.kodeco.android.coordplot.country_info.networking.ApiService
 import com.kodeco.android.coordplot.country_info.networking.CountryInfoState
@@ -38,20 +34,18 @@ fun CountryInfoScreen(
     navigation: NavController,
     countersTopBar: @Composable () -> Unit
 ) {
-
-    var countryInfoState by rememberSaveable { mutableStateOf<CountryInfoState>(CountryInfoState.Loading) }
+    var countryInfoState by rememberSaveable {
+        mutableStateOf<CountryInfoState>(CountryInfoState.Loading)
+    }
 
     LaunchedEffect(Unit) {
-
-        if (data.isNotEmpty()) {
+        if (data.isEmpty() || dataNeedsRefreshing) {
+            getCountryInfoFlow(apiService).collect { currentCountryInfoState ->
+                countryInfoState = currentCountryInfoState
+            }
+        } else {
             countryInfoState = CountryInfoState.Success
-            return@LaunchedEffect
         }
-
-        getCountryInfoFlow(apiService).collect { currentCountryInfoState ->
-            countryInfoState = currentCountryInfoState
-        }
-
     }
 
     when (countryInfoState) {
@@ -91,6 +85,7 @@ private fun getCountryInfoFlow(apiService: ApiService): Flow<CountryInfoState> =
         Log.e(TAG, "Error: ${countriesResponse.message()}")
         emit(CountryInfoState.Failure)
     }
+    dataNeedsRefreshing = false
 }.catch {
     Log.e(TAG, "Error: ${it.message}")
     emit(CountryInfoState.Failure)

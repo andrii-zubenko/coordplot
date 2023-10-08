@@ -15,6 +15,7 @@ import com.kodeco.android.coordplot.country_info.screens.CountryInfoScreen
 import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.coordplotter.screens.PlotSurface
 import com.kodeco.android.coordplot.country_info.CountryListData.data
+import com.kodeco.android.coordplot.country_info.CountryListData.dataNeedsRefreshing
 import com.kodeco.android.coordplot.country_info.Flows.backFlow
 import com.kodeco.android.coordplot.country_info.Flows.tapFlow
 import com.kodeco.android.coordplot.country_info.components.CountersTopBar
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
                                     taps = tapState.value,
                                     backs = backState.value,
                                     onRefreshClick = {
-                                        // TODO make another api call to fetch data
+                                        dataNeedsRefreshing = true
                                         navController.navigate("country_list")
                                     }
                                 )
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                                     taps = tapState.value,
                                     backs = backState.value,
                                     onRefreshClick = {
-                                        // TODO make another api call to fetch data
+                                        dataNeedsRefreshing = true
                                         navController.navigate("country_list")
                                     }
                                 )
