@@ -50,6 +50,7 @@ class MainActivity : ComponentActivity() {
                                     taps = tapState.value,
                                     backs = backState.value,
                                     onRefreshClick = {
+                                        // TODO make another api call to fetch data
                                         navController.navigate("country_list")
                                     }
                                 )
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity() {
                                     taps = tapState.value,
                                     backs = backState.value,
                                     onRefreshClick = {
+                                        // TODO make another api call to fetch data
                                         navController.navigate("country_list")
                                     }
                                 )
