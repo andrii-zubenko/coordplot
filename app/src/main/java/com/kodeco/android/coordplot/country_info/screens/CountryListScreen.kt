@@ -32,11 +32,16 @@ fun CountryInfoScreen(navigation: NavController) {
     var apiState by rememberSaveable { mutableStateOf<ApiState>(ApiState.Empty) }
 
     LaunchedEffect(Unit) {
+        if (data.isNotEmpty()) {
+            apiState = ApiState.Success
+            return@LaunchedEffect
+        }
+        
         try {
             apiState = ApiState.Loading
             val countriesResponse = apiService.getAllCountries()
             // Simulate a network delay
-            delay(5000L)
+            delay(2000L)
 
             apiState = if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
                 CountryListData.setData(countriesResponse.body()?.toList() ?: emptyList())
@@ -50,6 +55,7 @@ fun CountryInfoScreen(navigation: NavController) {
             ApiState.Failure
         }
     }
+
 
     when (apiState) {
         is ApiState.Success -> {
