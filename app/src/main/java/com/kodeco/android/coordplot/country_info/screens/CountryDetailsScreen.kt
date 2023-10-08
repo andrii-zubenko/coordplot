@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.country_info.Flows.incrementBackValue
+import com.kodeco.android.coordplot.country_info.Flows.tapBack
 import com.kodeco.android.coordplot.country_info.components.CountersTopBar
 import com.kodeco.android.coordplot.country_info.components.DetailItem
 import com.kodeco.android.coordplot.country_info.model.Country
@@ -41,7 +41,7 @@ fun CountryDetailsScreen(
                     title = { Text(text = countryData[countryIndex].name.common) },
                     navigationIcon = {
                         IconButton(onClick = {
-                            incrementBackValue()
+                            tapBack()
                             onBackClicked()
                         }) {
                             Icon(

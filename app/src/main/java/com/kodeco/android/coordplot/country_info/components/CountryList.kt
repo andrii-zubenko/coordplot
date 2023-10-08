@@ -13,8 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.kodeco.android.coordplot.country_info.Flows
-import com.kodeco.android.coordplot.country_info.Flows.incrementTapValue
+import com.kodeco.android.coordplot.country_info.Flows.tap
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
@@ -37,7 +36,7 @@ fun CountryList(
                             vertical = 8.dp
                         )
                         .clickable {
-                            incrementTapValue()
+                            tap()
                             navigation?.navigate("country_details/$index")
                         },
                     shape = RoundedCornerShape(4.dp)

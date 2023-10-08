@@ -11,26 +11,23 @@ object Flows {
         GlobalScope.launch {
             while (true) {
                 delay(1000)
-                incrementCounterValue()
+                _counterFlow.value += 1
             }
         }
     }
 
     private val _tapFlow = MutableStateFlow(0)
     val tapFlow = _tapFlow.asStateFlow()
-    fun incrementTapValue() {
+    fun tap() {
         _tapFlow.value += 1
     }
 
     private val _backFlow = MutableStateFlow(0)
     val backFlow = _backFlow.asStateFlow()
-    fun incrementBackValue() {
+    fun tapBack() {
         _backFlow.value += 1
     }
 
     private val _counterFlow = MutableStateFlow(0)
     val counterFlow = _counterFlow.asStateFlow()
-    private fun incrementCounterValue() {
-        _counterFlow.value += 1
-    }
 }
