@@ -15,7 +15,8 @@ import com.kodeco.android.coordplot.country_info.screens.CountryInfoScreen
 import com.kodeco.android.coordplot.ui.theme.CoordPlotTheme
 import com.kodeco.android.coordplot.coordplotter.screens.PlotSurface
 import com.kodeco.android.coordplot.country_info.CountryListData.data
-import com.kodeco.android.coordplot.country_info.Flows
+import com.kodeco.android.coordplot.country_info.Flows.backFlow
+import com.kodeco.android.coordplot.country_info.Flows.tapFlow
 import com.kodeco.android.coordplot.country_info.components.CountersTopBar
 import com.kodeco.android.coordplot.country_info.screens.CountryDetailsScreen
 
@@ -29,8 +30,8 @@ class MainActivity : ComponentActivity() {
             CoordPlotTheme {
                 val configuration = LocalConfiguration.current
                 val navController = rememberNavController()
-                val tapState = Flows.tapFlow.collectAsState()
-                val backState = Flows.backFlow.collectAsState()
+                val tapState = tapFlow.collectAsState()
+                val backState = backFlow.collectAsState()
 
                 NavHost(navController = navController, startDestination = "mainscreen") {
                     composable("mainscreen") {

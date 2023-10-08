@@ -1,24 +1,36 @@
 package com.kodeco.android.coordplot.country_info
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 object Flows {
-    private val _tapFlow: StateFlow<Int> = MutableStateFlow(0)
-    val tapFlow: StateFlow<Int> = _tapFlow
-    fun setNewTapValue(newValue: Int) {
-        (_tapFlow as MutableStateFlow).value = newValue
+    init {
+        GlobalScope.launch {
+            while (true) {
+                delay(1000)
+                incrementCounterValue()
+            }
+        }
     }
 
-    private val _backFlow: StateFlow<Int> = MutableStateFlow(0)
-    val backFlow: StateFlow<Int> = _backFlow
-    fun setNewBackValue(newValue: Int) {
-        (_backFlow as MutableStateFlow).value = newValue
+    private val _tapFlow = MutableStateFlow(0)
+    val tapFlow = _tapFlow.asStateFlow()
+    fun incrementTapValue() {
+        _tapFlow.value += 1
     }
 
-    private val _counterFlow: StateFlow<Int> = MutableStateFlow(0)
-    val counterFlow: StateFlow<Int> = _counterFlow
-    fun setNewCounterValue(newValue: Int) {
-        (_counterFlow as MutableStateFlow).value = newValue
+    private val _backFlow = MutableStateFlow(0)
+    val backFlow = _backFlow.asStateFlow()
+    fun incrementBackValue() {
+        _backFlow.value += 1
+    }
+
+    private val _counterFlow = MutableStateFlow(0)
+    val counterFlow = _counterFlow.asStateFlow()
+    private fun incrementCounterValue() {
+        _counterFlow.value += 1
     }
 }

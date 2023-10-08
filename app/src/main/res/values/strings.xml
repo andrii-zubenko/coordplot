@@ -12,4 +12,5 @@
     <string name="taps">Taps: %1$s</string>
     <string name="refresh">Refresh</string>
     <string name="backs">Backs: %1$s</string>
+    <string name="loading_app_up_time_seconds">Loading... App up time: %1$s seconds</string>
 </resources>
