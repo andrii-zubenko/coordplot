@@ -14,4 +14,6 @@
     <string name="backs">Backs: %1$s</string>
     <string name="loading_app_up_time_seconds">Loading... App up time: %1$s seconds</string>
     <string name="unique_countries_selected">Unique countries selected: %1$s</string>
+    <string name="go_dark">Go Dark</string>
+    <string name="go_light">Go Light</string>
 </resources>

@@ -69,8 +69,8 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
             ) {
                 Text(
                     text = when (currentTheme.value) {
-                        Theme.LIGHT -> "Go Dark"
-                        Theme.DARK -> "Go Light"
+                        Theme.LIGHT -> stringResource(R.string.go_dark)
+                        Theme.DARK -> stringResource(R.string.go_light)
                     }
                 )
             }
