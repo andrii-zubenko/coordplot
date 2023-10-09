@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,7 @@ import com.kodeco.android.coordplot.country_info.Flows.setTheme
 import com.kodeco.android.coordplot.country_info.Theme
 import com.kodeco.android.coordplot.ui.theme.Black
 import com.kodeco.android.coordplot.ui.theme.LightBlue
+import com.kodeco.android.coordplot.ui.theme.White
 
 @Composable
 fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick: () -> Unit) {
@@ -60,11 +60,7 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
                         Theme.LIGHT -> LightBlue
                         Theme.DARK -> Black
                     },
-                    contentColor = when (currentTheme.value) {
-                        Theme.LIGHT -> Color.White
-                        Theme.DARK -> Color.White
-                    }
-
+                    contentColor = White
                 )
             ) {
                 Text(
