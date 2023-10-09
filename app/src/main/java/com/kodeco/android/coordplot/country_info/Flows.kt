@@ -3,6 +3,7 @@ package com.kodeco.android.coordplot.country_info
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -30,4 +31,15 @@ object Flows {
 
     private val _counterFlow = MutableStateFlow(0)
     val counterFlow = _counterFlow.asStateFlow()
+
+    private val _currentTheme = MutableStateFlow(Theme.LIGHT)
+    val currentTheme: StateFlow<Theme> = _currentTheme.asStateFlow()
+
+    fun setTheme(theme: Theme) {
+        _currentTheme.value = theme
+    }
+}
+
+enum class Theme {
+    LIGHT, DARK
 }
