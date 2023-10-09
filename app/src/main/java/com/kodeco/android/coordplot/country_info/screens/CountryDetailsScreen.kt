@@ -91,6 +91,6 @@ fun CountryDetailsScreenPreview() {
         countryIndex = 0,
         onBackClicked = {},
         countersTopBar = {
-            CountersTopBar(taps = 0, backs = 0, onRefreshClick = { })
+            CountersTopBar(taps = 0, backs = 0, countriesSelected = 0, onRefreshClick = { })
         })
 }

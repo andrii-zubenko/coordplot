@@ -13,4 +13,5 @@
     <string name="refresh">Refresh</string>
     <string name="backs">Backs: %1$s</string>
     <string name="loading_app_up_time_seconds">Loading... App up time: %1$s seconds</string>
+    <string name="unique_countries_selected">Unique countries selected: %1$s</string>
 </resources>

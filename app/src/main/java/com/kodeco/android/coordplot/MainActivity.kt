@@ -18,6 +18,7 @@ import com.kodeco.android.coordplot.country_info.CountryListData.data
 import com.kodeco.android.coordplot.country_info.CountryListData.dataNeedsRefreshing
 import com.kodeco.android.coordplot.country_info.Flows.backFlow
 import com.kodeco.android.coordplot.country_info.Flows.tapFlow
+import com.kodeco.android.coordplot.country_info.Flows.uniqueCountriesSelectedFlow
 import com.kodeco.android.coordplot.country_info.components.CountersTopBar
 import com.kodeco.android.coordplot.country_info.screens.CountryDetailsScreen
 
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val tapState = tapFlow.collectAsState()
                 val backState = backFlow.collectAsState()
+                val countriesSelected =
+                    uniqueCountriesSelectedFlow.collectAsState(initial = emptyList())
 
                 NavHost(navController = navController, startDestination = "mainscreen") {
                     composable("mainscreen") {
@@ -51,6 +54,7 @@ class MainActivity : ComponentActivity() {
                                 CountersTopBar(
                                     taps = tapState.value,
                                     backs = backState.value,
+                                    countriesSelected = countriesSelected.value.size,
                                     onRefreshClick = {
                                         dataNeedsRefreshing = true
                                         navController.navigate("country_list")
@@ -74,6 +78,7 @@ class MainActivity : ComponentActivity() {
                                 CountersTopBar(
                                     taps = tapState.value,
                                     backs = backState.value,
+                                    countriesSelected = countriesSelected.value.size,
                                     onRefreshClick = {
                                         dataNeedsRefreshing = true
                                         navController.navigate("country_list")
