@@ -16,4 +16,7 @@
     <string name="unique_countries_selected">Unique countries selected: %1$s</string>
     <string name="go_dark">Go Dark</string>
     <string name="go_light">Go Light</string>
+    <string name="capital">Capital</string>
+    <string name="population">Population</string>
+    <string name="area">Area</string>
 </resources>

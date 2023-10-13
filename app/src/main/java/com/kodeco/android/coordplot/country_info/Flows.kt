@@ -23,17 +23,14 @@ object Flows {
         }
     }
 
-    private val _tapFlow = MutableStateFlow(0)
-    val tapFlow = _tapFlow.asStateFlow()
-    fun tap() {
-        _tapFlow.value += 1
-    }
+    private val _uniqueCountriesSelectedFlow = MutableSharedFlow<List<Country>>()
+    val uniqueCountriesSelectedFlow: SharedFlow<List<Country>> = _uniqueCountriesSelectedFlow
 
     private val _backFlow = MutableStateFlow(0)
     val backFlow = _backFlow.asStateFlow()
-    fun tapBack() {
-        _backFlow.value += 1
-    }
+
+    private val _tapFlow = MutableStateFlow(0)
+    val tapFlow = _tapFlow.asStateFlow()
 
     private val _counterFlow = MutableStateFlow(0)
     val counterFlow = _counterFlow.asStateFlow()
@@ -41,14 +38,20 @@ object Flows {
     private val _currentTheme = MutableStateFlow(Theme.LIGHT)
     val currentTheme: StateFlow<Theme> = _currentTheme.asStateFlow()
 
+    private val _selectedCountriesList = mutableListOf<Country>()
+
+    fun tap() {
+        _tapFlow.value += 1
+    }
+
+    fun tapBack() {
+        _backFlow.value += 1
+    }
+
     fun setTheme(theme: Theme) {
         _currentTheme.value = theme
     }
 
-    private val _uniqueCountriesSelectedFlow = MutableSharedFlow<List<Country>>()
-    val uniqueCountriesSelectedFlow: SharedFlow<List<Country>> = _uniqueCountriesSelectedFlow
-
-    private val _selectedCountriesList = mutableListOf<Country>()
     fun addCountry(country: Country) {
         if (!_selectedCountriesList.contains(country)) {
             _selectedCountriesList.add(country)

@@ -60,9 +60,18 @@ fun CountryDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    DetailItem("Capital", countryData[countryIndex].capital?.get(0).toString())
-                    DetailItem("Population", countryData[countryIndex].population.toString())
-                    DetailItem("Area", countryData[countryIndex].area.toString())
+                    DetailItem(
+                        stringResource(R.string.capital),
+                        countryData[countryIndex].capital?.get(0).toString()
+                    )
+                    DetailItem(
+                        stringResource(R.string.population),
+                        countryData[countryIndex].population.toString()
+                    )
+                    DetailItem(
+                        stringResource(R.string.area),
+                        countryData[countryIndex].area.toString()
+                    )
                     AsyncImage(
                         model = countryData[countryIndex].flags.png,
                         contentDescription = stringResource(R.string.country_flag),
