@@ -19,46 +19,67 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kodeco.android.coordplot.R
+import com.kodeco.android.coordplot.country_info.Flows.tapBack
+import com.kodeco.android.coordplot.country_info.components.CountersTopBar
 import com.kodeco.android.coordplot.country_info.components.DetailItem
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
 
 @Composable
-fun CountryDetailsScreen(countryData: List<Country>, countryIndex: Int, onBackClicked: () -> Unit) {
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = countryData[countryIndex].name.common) },
-                navigationIcon = {
-                    IconButton(onClick = { onBackClicked() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_button)
-                        )
+fun CountryDetailsScreen(
+    countryData: List<Country>,
+    countryIndex: Int,
+    onBackClicked: () -> Unit,
+    countersTopBar: @Composable () -> Unit
+) {
+    Column {
+        countersTopBar()
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = countryData[countryIndex].name.common) },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            tapBack()
+                            onBackClicked()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back_button)
+                            )
+                        }
                     }
-                }
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                DetailItem("Capital", countryData[countryIndex].capital?.get(0).toString())
-                DetailItem("Population", countryData[countryIndex].population.toString())
-                DetailItem("Area", countryData[countryIndex].area.toString())
-                AsyncImage(
-                    model = countryData[countryIndex].flags.png,
-                    contentDescription = stringResource(R.string.country_flag),
                 )
+            },
+            content = { paddingValues ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    DetailItem(
+                        stringResource(R.string.capital),
+                        countryData[countryIndex].capital?.get(0).toString()
+                    )
+                    DetailItem(
+                        stringResource(R.string.population),
+                        countryData[countryIndex].population.toString()
+                    )
+                    DetailItem(
+                        stringResource(R.string.area),
+                        countryData[countryIndex].area.toString()
+                    )
+                    AsyncImage(
+                        model = countryData[countryIndex].flags.png,
+                        contentDescription = stringResource(R.string.country_flag),
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 
@@ -75,5 +96,10 @@ fun CountryDetailsScreenPreview() {
         )
     )
 
-    CountryDetailsScreen(countryData = data, countryIndex = 0, onBackClicked = {})
+    CountryDetailsScreen(countryData = data,
+        countryIndex = 0,
+        onBackClicked = {},
+        countersTopBar = {
+            CountersTopBar(taps = 0, backs = 0, countriesSelected = 0, onRefreshClick = { })
+        })
 }

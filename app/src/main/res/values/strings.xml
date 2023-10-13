@@ -9,4 +9,14 @@
     <string name="flag_image">Flag Image</string>
     <string name="oops_something_is_not_right">Oops! Something is not right :(</string>
     <string name="country_flag">Country Flag</string>
+    <string name="taps">Taps: %1$s</string>
+    <string name="refresh">Refresh</string>
+    <string name="backs">Backs: %1$s</string>
+    <string name="loading_app_up_time_seconds">Loading... App up time: %1$s seconds</string>
+    <string name="unique_countries_selected">Unique countries selected: %1$s</string>
+    <string name="go_dark">Go Dark</string>
+    <string name="go_light">Go Light</string>
+    <string name="capital">Capital</string>
+    <string name="population">Population</string>
+    <string name="area">Area</string>
 </resources>
