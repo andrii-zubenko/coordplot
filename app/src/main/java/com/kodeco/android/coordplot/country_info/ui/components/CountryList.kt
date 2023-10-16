@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.country_info.components
+package com.kodeco.android.coordplot.country_info.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.kodeco.android.coordplot.country_info.Flows.addCountry
-import com.kodeco.android.coordplot.country_info.Flows.tap
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
@@ -23,7 +21,8 @@ import com.kodeco.android.coordplot.country_info.model.CountryName
 fun CountryList(
     countries: List<Country>,
     navigation: NavController?,
-    countersTopBar: @Composable () -> Unit
+    countersTopBar: @Composable () -> Unit,
+    countersTopBarViewModel: CountersTopBarViewModel
 ) {
     Column {
         countersTopBar()
@@ -37,9 +36,8 @@ fun CountryList(
                             vertical = 8.dp
                         )
                         .clickable {
-                            tap()
-                            addCountry(countries[index])
-                            navigation?.navigate("country_details/$index")
+                            countersTopBarViewModel.tap()
+                            navigation?.navigate("countryDetails/$index")
                         },
                     shape = RoundedCornerShape(4.dp)
                 ) {
@@ -67,7 +65,8 @@ fun PreviewCountryList() {
             )
         ), navigation = null,
         countersTopBar = {
-            CountersTopBar(taps = 0, backs = 0, countriesSelected = 0, onRefreshClick = { })
-        }
+            CountersTopBar(onRefreshClick = { }, viewModel = CountersTopBarViewModel())
+        },
+        countersTopBarViewModel = CountersTopBarViewModel()
     )
 }
