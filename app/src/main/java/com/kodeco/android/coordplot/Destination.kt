@@ -24,6 +24,6 @@ object CountryDetails : Destination {
     const val countryIndexArg = "index"
     val routeWithArg = "$route/{index}"
     val arguments = listOf(
-        navArgument("index") { type = NavType.IntType }
+        navArgument(countryIndexArg) { type = NavType.IntType }
     )
 }
