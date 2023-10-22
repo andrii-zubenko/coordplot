@@ -24,7 +24,6 @@ fun Navigation() {
     val navController = rememberNavController()
     val repository = CountryRepositoryImpl(apiService)
 
-    val countersTopBarViewModel = CountersTopBarViewModel()
     val countryInfoViewModel: CountryInfoViewModel =
         viewModel(
             factory = CountryInfoViewModelFactory(repository = repository)
@@ -43,17 +42,7 @@ fun Navigation() {
         composable("countryInfo") {
             CountryInfoScreen(
                 navigation = navController,
-                countersTopBar = {
-                    CountersTopBar(
-                        onRefreshClick = {
-                            navController.navigate("countryInfo")
-                            countryInfoViewModel.fetchCountryList(refreshNeeded = true)
-                        },
-                        viewModel = countersTopBarViewModel
-                    )
-                },
-                viewModel = countryInfoViewModel,
-                countersTopBarViewModel = countersTopBarViewModel
+                viewModel = countryInfoViewModel
             )
         }
         composable(
@@ -65,22 +54,12 @@ fun Navigation() {
             val index = backStackEntry.arguments?.getInt("index") ?: 0
             CountryDetailsScreen(
                 onBackClicked = { navController.navigateUp() },
-                countersTopBar = {
-                    CountersTopBar(
-                        onRefreshClick = {
-                            navController.navigate("countryInfo")
-                            countryInfoViewModel.fetchCountryList(refreshNeeded = true)
-                        },
-                        viewModel = countersTopBarViewModel
-                    )
-                },
                 viewModel = viewModel(
                     factory = CountryDetailsViewModelFactory(
                         countryIndex = index,
                         repository = repository,
                     ),
-                ),
-                countersTopBarViewModel = countersTopBarViewModel
+                )
             )
         }
     }

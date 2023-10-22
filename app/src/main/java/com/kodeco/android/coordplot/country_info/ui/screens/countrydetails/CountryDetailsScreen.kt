@@ -19,32 +19,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.country_info.ui.components.CountersTopBar
 import com.kodeco.android.coordplot.country_info.ui.components.DetailItem
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
-import com.kodeco.android.coordplot.country_info.ui.components.CountersTopBarViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 @Composable
 fun CountryDetailsScreen(
     onBackClicked: () -> Unit,
-    countersTopBar: @Composable () -> Unit,
     viewModel: CountryDetailsViewModel,
-    countersTopBarViewModel: CountersTopBarViewModel
 ) {
     Column {
-        countersTopBar()
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { viewModel.selectedCountry.value?.name?.let { Text(text = it.common) } },
                     navigationIcon = {
                         IconButton(onClick = {
-                            countersTopBarViewModel.back()
                             onBackClicked()
                         }) {
                             Icon(
@@ -111,9 +105,6 @@ fun CountryDetailsScreenPreview() {
 
     CountryDetailsScreen(
         onBackClicked = {},
-        countersTopBar = {
-            CountersTopBar(onRefreshClick = { }, viewModel = CountersTopBarViewModel())
-        }, viewModel = CountryDetailsViewModel(0, testRepository),
-        countersTopBarViewModel = CountersTopBarViewModel()
+        viewModel = CountryDetailsViewModel(0, testRepository)
     )
 }
