@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.country_info.components
+package com.kodeco.android.coordplot.country_info.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,23 +9,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.country_info.Flows.currentTheme
-import com.kodeco.android.coordplot.country_info.Flows.setTheme
-import com.kodeco.android.coordplot.country_info.Theme
 import com.kodeco.android.coordplot.ui.theme.Black
 import com.kodeco.android.coordplot.ui.theme.LightBlue
 import com.kodeco.android.coordplot.ui.theme.White
 
 @Composable
-fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick: () -> Unit) {
-    val currentTheme = currentTheme.collectAsState()
+fun CountersTopBar(viewModel: CountersTopBarViewModel, onRefreshClick: () -> Unit) {
 
     Column {
         Row(
@@ -35,9 +30,8 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = stringResource(R.string.taps, taps))
-            Text(text = stringResource(R.string.backs, backs))
-            Text(text = stringResource(R.string.unique_countries_selected, countriesSelected))
+            Text(text = stringResource(R.string.taps, viewModel.taps))
+            Text(text = stringResource(R.string.backs, viewModel.backs))
         }
         Row(
             modifier = Modifier
@@ -53,10 +47,14 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
             }
             Button(
                 onClick = {
-                    setTheme(if (currentTheme.value == Theme.LIGHT) Theme.DARK else Theme.LIGHT)
+                    viewModel.setTheme(
+                        if (viewModel.currentTheme == Theme.LIGHT) {
+                            Theme.DARK
+                        } else Theme.LIGHT
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = when (currentTheme.value) {
+                    containerColor = when (viewModel.currentTheme) {
                         Theme.LIGHT -> LightBlue
                         Theme.DARK -> Black
                     },
@@ -64,7 +62,7 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
                 )
             ) {
                 Text(
-                    text = when (currentTheme.value) {
+                    text = when (viewModel.currentTheme) {
                         Theme.LIGHT -> stringResource(R.string.go_dark)
                         Theme.DARK -> stringResource(R.string.go_light)
                     }
@@ -77,5 +75,6 @@ fun CountersTopBar(taps: Int, backs: Int, countriesSelected: Int, onRefreshClick
 @Composable
 @Preview(showBackground = true)
 fun CountersPreview() {
-    CountersTopBar(taps = 0, backs = 0, countriesSelected = 0, onRefreshClick = { })
+    val testViewModel = CountersTopBarViewModel()
+    CountersTopBar(viewModel = testViewModel, onRefreshClick = { })
 }

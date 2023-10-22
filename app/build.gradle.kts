@@ -23,6 +23,10 @@ android {
         }
     }
 
+    lint {
+        disable += "MissingDefaultResource"
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false

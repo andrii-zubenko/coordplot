@@ -1,4 +1,4 @@
-package com.kodeco.android.coordplot.country_info.components
+package com.kodeco.android.coordplot.country_info.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
