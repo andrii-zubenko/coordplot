@@ -10,10 +10,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
+
+
 class CountryRepositoryImpl(private val apiService: ApiService) :
     CountryRepository {
-    private val TAG = "CountryRepositoryImpl"
+    private val TAG = CountryRepositoryImpl::class.java.simpleName
     private var countries = listOf<Country>()
+
     override suspend fun fetchCountries(refreshNeeded: Boolean): Flow<List<Country>> {
         if (!refreshNeeded && countries.isNotEmpty()) {
             return flow {
