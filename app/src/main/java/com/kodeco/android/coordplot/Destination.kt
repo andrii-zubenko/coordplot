@@ -27,3 +27,7 @@ object CountryDetails : Destination {
         navArgument(countryIndexArg) { type = NavType.IntType }
     )
 }
+
+object AboutScreen : Destination {
+    override val route = "about_screen"
+}

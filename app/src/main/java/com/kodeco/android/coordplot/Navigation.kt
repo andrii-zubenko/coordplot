@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kodeco.android.coordplot.coordplotter.screens.PlotSurface
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
+import com.kodeco.android.coordplot.country_info.ui.screens.aboutscreen.AboutScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsViewModelFactory
 import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoScreen
@@ -41,7 +42,8 @@ fun Navigation(
                 viewModel = countryInfoViewModel,
                 onCountryRowTap = { countryIndex ->
                     navController.navigateToSingleCountry(countryIndex)
-                }
+                },
+                onAboutTap = { navController.navigate(AboutScreen.route) }
             )
         }
         composable(
@@ -50,7 +52,7 @@ fun Navigation(
         ) { backStackEntry ->
             val index = backStackEntry.arguments?.getInt(CountryDetails.countryIndexArg) ?: 0
             CountryDetailsScreen(
-                onBackClicked = { navController.navigateUp() },
+                onBackTap = { navController.navigateUp() },
                 viewModel = viewModel(
                     factory = CountryDetailsViewModelFactory(
                         countryIndex = index,
@@ -58,6 +60,9 @@ fun Navigation(
                     ),
                 )
             )
+        }
+        composable(AboutScreen.route) {
+            AboutScreen(onBackTap = { navController.navigateUp() })
         }
     }
 }

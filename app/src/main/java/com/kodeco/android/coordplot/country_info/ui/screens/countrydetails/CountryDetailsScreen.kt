@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun CountryDetailsScreen(
-    onBackClicked: () -> Unit,
+    onBackTap: () -> Unit,
     viewModel: CountryDetailsViewModel,
 ) {
     Column {
@@ -39,7 +39,7 @@ fun CountryDetailsScreen(
                     title = { viewModel.selectedCountry.value?.name?.let { Text(text = it.common) } },
                     navigationIcon = {
                         IconButton(onClick = {
-                            onBackClicked()
+                            onBackTap()
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -104,7 +104,7 @@ fun CountryDetailsScreenPreview() {
     }
 
     CountryDetailsScreen(
-        onBackClicked = {},
+        onBackTap = {},
         viewModel = CountryDetailsViewModel(0, testRepository)
     )
 }
