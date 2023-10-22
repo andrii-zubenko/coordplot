@@ -1,8 +1,6 @@
 package com.kodeco.android.coordplot.country_info.ui.screens.countrydetails
 
-import androidx.compose.runtime.IntState
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.kodeco.android.coordplot.country_info.model.Country

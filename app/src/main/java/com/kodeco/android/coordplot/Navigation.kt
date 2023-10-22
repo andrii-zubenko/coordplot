@@ -1,17 +1,14 @@
-package com.kodeco.android.coordplot.country_info.ui.components
+package com.kodeco.android.coordplot
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.kodeco.android.coordplot.MainScreen
 import com.kodeco.android.coordplot.coordplotter.screens.PlotSurface
-import com.kodeco.android.coordplot.country_info.networking.apiService
-import com.kodeco.android.coordplot.country_info.repositories.CountryRepositoryImpl
+import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsViewModelFactory
 import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoScreen
@@ -19,39 +16,39 @@ import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryI
 import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoViewModelFactory
 
 @Composable
-fun Navigation() {
+fun Navigation(
+    repository: CountryRepository
+) {
     val configuration = LocalConfiguration.current
     val navController = rememberNavController()
-    val repository = CountryRepositoryImpl(apiService)
 
-    val countryInfoViewModel: CountryInfoViewModel =
-        viewModel(
-            factory = CountryInfoViewModelFactory(repository = repository)
-        )
+    val countryInfoViewModel: CountryInfoViewModel = viewModel(
+        factory = CountryInfoViewModelFactory(repository = repository)
+    )
 
-    NavHost(navController = navController, startDestination = "mainscreen") {
-        composable("mainscreen") {
+    NavHost(navController = navController, startDestination = MainScreen.route) {
+        composable(MainScreen.route) {
             MainScreen(
-                onNavigateToCoordPlot = { navController.navigate("coordplot") },
-                onNavigateToCountryInfo = { navController.navigate("countryInfo") }
+                onNavigateToCoordPlot = { navController.navigate(CoordPlot.route) },
+                onNavigateToCountryInfo = { navController.navigate(CountryInfo.route) }
             )
         }
-        composable("coordplot") {
+        composable(CoordPlot.route) {
             PlotSurface(configuration.orientation)
         }
-        composable("countryInfo") {
+        composable(CountryInfo.route) {
             CountryInfoScreen(
-                navigation = navController,
-                viewModel = countryInfoViewModel
+                viewModel = countryInfoViewModel,
+                onCountryRowTap = { countryIndex ->
+                    navController.navigateToSingleCountry(countryIndex)
+                }
             )
         }
         composable(
-            route = "countryDetails/{index}",
-            arguments = listOf(
-                navArgument("index") { type = NavType.IntType }
-            )
+            route = CountryDetails.routeWithArg,
+            arguments = CountryDetails.arguments
         ) { backStackEntry ->
-            val index = backStackEntry.arguments?.getInt("index") ?: 0
+            val index = backStackEntry.arguments?.getInt(CountryDetails.countryIndexArg) ?: 0
             CountryDetailsScreen(
                 onBackClicked = { navController.navigateUp() },
                 viewModel = viewModel(
@@ -64,3 +61,8 @@ fun Navigation() {
         }
     }
 }
+
+private fun NavHostController.navigateToSingleCountry(countryIndex: Int) {
+    this.navigate("${CountryDetails.route}/$countryIndex")
+}
+
