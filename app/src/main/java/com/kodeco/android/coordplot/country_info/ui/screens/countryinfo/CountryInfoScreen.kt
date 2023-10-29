@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,13 +20,13 @@ fun CountryInfoScreen(
     onCountryRowTap: (Int) -> Unit,
     onAboutTap: () -> Unit
 ) {
-    val state = viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
 
-    when (state.value) {
+    when (state) {
         is CountryInfoState.Success -> {
             CountryList(
-                countries = (state.value as CountryInfoState.Success).countryList,
-                onRefreshTap = { viewModel.fetchCountryList(true) },
+                countries = (state as CountryInfoState.Success).countryList,
+                onRefreshTap = { viewModel.fetchCountryList() },
                 onCountryRowTap = { countryIndex ->
                     onCountryRowTap(countryIndex)
                 },
@@ -33,7 +34,7 @@ fun CountryInfoScreen(
             )
         }
 
-        is CountryInfoState.Failure -> {
+        is CountryInfoState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -43,7 +44,7 @@ fun CountryInfoScreen(
         }
 
         CountryInfoState.Loading -> {
-            LoadingScreen(countryInfoViewModel = viewModel)
+            LoadingScreen()
         }
     }
 }

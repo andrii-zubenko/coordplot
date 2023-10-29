@@ -25,7 +25,6 @@ import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @Composable
 fun CountryDetailsScreen(
@@ -92,15 +91,21 @@ fun CountryDetailsScreenPreview() {
     )
 
     val testRepository = object : CountryRepository {
-        override suspend fun fetchCountries(refreshNeeded: Boolean): Flow<List<Country>> {
-            return flow {
-                emit(listOf(testCountry))
-            }
+        override val countries: Flow<List<Country>>
+            get() = TODO("Not yet implemented")
+
+        override suspend fun fetchCountries() {
+            TODO("Not yet implemented")
         }
 
         override fun getCountry(countryIndex: Int): Country? {
             return testCountry
         }
+
+        override fun favorite(country: Country) {
+            TODO("Not yet implemented")
+        }
+
     }
 
     CountryDetailsScreen(
