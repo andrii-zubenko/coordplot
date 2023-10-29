@@ -19,4 +19,6 @@
     <string name="capital">Capital</string>
     <string name="population">Population</string>
     <string name="area">Area</string>
+    <string name="about">About</string>
+    <string name="about_title">About</string>
 </resources>

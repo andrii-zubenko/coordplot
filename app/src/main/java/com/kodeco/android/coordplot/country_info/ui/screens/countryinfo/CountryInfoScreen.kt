@@ -8,19 +8,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.ui.components.CountryList
 import com.kodeco.android.coordplot.country_info.networking.CountryInfoState
-import com.kodeco.android.coordplot.country_info.ui.components.CountersTopBarViewModel
 import com.kodeco.android.coordplot.country_info.ui.components.LoadingScreen
 
 @Composable
 fun CountryInfoScreen(
-    navigation: NavController,
-    countersTopBar: @Composable () -> Unit,
     viewModel: CountryInfoViewModel,
-    countersTopBarViewModel: CountersTopBarViewModel
+    onCountryRowTap: (Int) -> Unit,
+    onAboutTap: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState()
 
@@ -28,9 +25,11 @@ fun CountryInfoScreen(
         is CountryInfoState.Success -> {
             CountryList(
                 countries = (state.value as CountryInfoState.Success).countryList,
-                navigation = navigation,
-                countersTopBar = { countersTopBar() },
-                countersTopBarViewModel = countersTopBarViewModel
+                onRefreshTap = { viewModel.fetchCountryList(true) },
+                onCountryRowTap = { countryIndex ->
+                    onCountryRowTap(countryIndex)
+                },
+                onAboutTap = { onAboutTap() }
             )
         }
 

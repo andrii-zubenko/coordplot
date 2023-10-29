@@ -1,18 +1,29 @@
 package com.kodeco.android.coordplot.country_info.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Help
+import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.model.CountryFlags
 import com.kodeco.android.coordplot.country_info.model.CountryName
@@ -20,12 +31,42 @@ import com.kodeco.android.coordplot.country_info.model.CountryName
 @Composable
 fun CountryList(
     countries: List<Country>,
-    navigation: NavController?,
-    countersTopBar: @Composable () -> Unit,
-    countersTopBarViewModel: CountersTopBarViewModel
+    onRefreshTap: () -> Unit,
+    onCountryRowTap: (Int) -> Unit,
+    onAboutTap: () -> Unit
 ) {
     Column {
-        countersTopBar()
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 8.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = stringResource(R.string.country_info))
+                Icon(
+                    Icons.Rounded.Help,
+                    contentDescription = stringResource(R.string.about),
+                    modifier = Modifier.clickable { onAboutTap() }
+                )
+            }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Button(
+                    onClick = {
+                        onRefreshTap()
+                    }
+                ) {
+                    Text(text = stringResource(R.string.refresh))
+                }
+            }
+        }
         LazyColumn {
             items(countries.size) { index ->
                 Card(
@@ -35,10 +76,7 @@ fun CountryList(
                             horizontal = 8.dp,
                             vertical = 8.dp
                         )
-                        .clickable {
-                            countersTopBarViewModel.tap()
-                            navigation?.navigate("countryDetails/$index")
-                        },
+                        .clickable { onCountryRowTap(index) },
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Column(modifier = Modifier.padding(all = 8.dp)) {
@@ -63,10 +101,9 @@ fun PreviewCountryList() {
                 area = 9833520.0,
                 flags = CountryFlags("")
             )
-        ), navigation = null,
-        countersTopBar = {
-            CountersTopBar(onRefreshClick = { }, viewModel = CountersTopBarViewModel())
-        },
-        countersTopBarViewModel = CountersTopBarViewModel()
+        ),
+        onRefreshTap = {},
+        onCountryRowTap = {},
+        onAboutTap = {}
     )
 }
