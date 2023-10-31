@@ -44,7 +44,8 @@ fun CountryList(
     countries: List<Country>,
     onRefreshTap: () -> Unit,
     onCountryRowTap: (Int) -> Unit,
-    onAboutTap: () -> Unit
+    onAboutTap: () -> Unit,
+    onFavoriteTap: (Int) -> Unit
 ) {
     Column {
         Column {
@@ -98,7 +99,11 @@ fun CountryList(
                             Text(text = "Name: ${countries[index].name.common}")
                             Text(text = "Capital: ${countries[index].capital?.get(0).toString()}")
                         }
-                        AnimatedStar()
+                        AnimatedStar(
+                            onFavoriteTap = onFavoriteTap,
+                            countryIndex = index,
+                            isCountryFavorite = countries[index].isFavorite
+                        )
                     }
                 }
             }
@@ -111,8 +116,16 @@ enum class StarState {
 }
 
 @Composable
-fun AnimatedStar() {
-    val starState = remember { mutableStateOf(StarState.Empty) }
+fun AnimatedStar(
+    onFavoriteTap: (Int) -> Unit,
+    countryIndex: Int,
+    isCountryFavorite: Boolean = false
+) {
+    val starState = if (isCountryFavorite) {
+        remember { mutableStateOf(StarState.Filled) }
+    } else {
+        remember { mutableStateOf(StarState.Empty) }
+    }
     val transition = updateTransition(targetState = starState, label = "Star Transition")
 
     val rotation by transition.animateFloat(
@@ -129,6 +142,7 @@ fun AnimatedStar() {
                     StarState.Filled -> StarState.Empty
                     StarState.Empty -> StarState.Filled
                 }
+                onFavoriteTap(countryIndex)
             }
             .padding(16.dp)
 
@@ -176,6 +190,7 @@ fun PreviewCountryList() {
         ),
         onRefreshTap = {},
         onCountryRowTap = {},
-        onAboutTap = {}
+        onAboutTap = {},
+        onFavoriteTap = {}
     )
 }

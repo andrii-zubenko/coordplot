@@ -45,4 +45,6 @@ class CountryInfoViewModel(private val repository: CountryRepository) : ViewMode
             repository.favorite(country)
         }
     }
+
+    fun getCountryById(countryId: Int) = repository.getCountry(countryId)
 }
