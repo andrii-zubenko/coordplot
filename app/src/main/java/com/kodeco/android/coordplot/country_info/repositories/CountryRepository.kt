@@ -1,6 +1,6 @@
 package com.kodeco.android.coordplot.country_info.repositories
 
-import com.kodeco.android.coordplot.country_info.model.Country
+import com.kodeco.android.coordplot.country_info.models.Country
 import kotlinx.coroutines.flow.Flow
 
 interface CountryRepository {
@@ -8,5 +8,5 @@ interface CountryRepository {
 
     suspend fun fetchCountries()
     fun getCountry(countryIndex: Int): Country?
-    fun favorite(country: Country)
+    suspend fun favorite(country: Country)
 }

@@ -19,10 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kodeco.android.coordplot.R
+import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.ui.components.DetailItem
-import com.kodeco.android.coordplot.country_info.model.Country
-import com.kodeco.android.coordplot.country_info.model.CountryFlags
-import com.kodeco.android.coordplot.country_info.model.CountryName
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -35,7 +33,7 @@ fun CountryDetailsScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { viewModel.selectedCountry.value?.name?.let { Text(text = it.common) } },
+                    title = { viewModel.selectedCountry.value?.commonName?.let { Text(text = it) } },
                     navigationIcon = {
                         IconButton(onClick = {
                             onBackTap()
@@ -56,10 +54,12 @@ fun CountryDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    DetailItem(
-                        stringResource(R.string.capital),
-                        viewModel.selectedCountry.value?.capital?.get(0).toString()
-                    )
+                    viewModel.selectedCountry.value?.mainCapital?.let {
+                        DetailItem(
+                            stringResource(R.string.capital),
+                            it
+                        )
+                    }
                     DetailItem(
                         stringResource(R.string.population),
                         viewModel.selectedCountry.value?.population.toString()
@@ -69,7 +69,7 @@ fun CountryDetailsScreen(
                         viewModel.selectedCountry.value?.area.toString()
                     )
                     AsyncImage(
-                        model = viewModel.selectedCountry?.value?.flags?.png,
+                        model = viewModel.selectedCountry.value?.flagUrl ?: "",
                         contentDescription = stringResource(R.string.country_flag),
                     )
                 }
@@ -83,11 +83,11 @@ fun CountryDetailsScreen(
 fun CountryDetailsScreenPreview() {
 
     val testCountry = Country(
-        name = CountryName(common = "United States of America"),
-        capital = listOf("Washington, D.C."),
+        commonName =  "United States of America",
+        mainCapital = "Washington, D.C.",
         population = 331449281,
-        area = 9833520.0,
-        flags = CountryFlags("")
+        area = 9833520.0F,
+        flagUrl = ""
     )
 
     val testRepository = object : CountryRepository {
@@ -102,7 +102,7 @@ fun CountryDetailsScreenPreview() {
             return testCountry
         }
 
-        override fun favorite(country: Country) {
+        override suspend fun favorite(country: Country) {
             TODO("Not yet implemented")
         }
 

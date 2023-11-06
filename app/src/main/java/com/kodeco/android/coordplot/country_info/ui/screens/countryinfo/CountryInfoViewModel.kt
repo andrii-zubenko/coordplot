@@ -2,7 +2,7 @@ package com.kodeco.android.coordplot.country_info.ui.screens.countryinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kodeco.android.coordplot.country_info.model.Country
+import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.networking.CountryInfoState
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import kotlinx.coroutines.delay

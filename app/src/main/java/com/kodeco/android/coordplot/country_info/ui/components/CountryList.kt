@@ -35,9 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.country_info.model.Country
-import com.kodeco.android.coordplot.country_info.model.CountryFlags
-import com.kodeco.android.coordplot.country_info.model.CountryName
+import com.kodeco.android.coordplot.country_info.models.Country
 
 @Composable
 fun CountryList(
@@ -96,8 +94,8 @@ fun CountryList(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(modifier = Modifier.padding(all = 8.dp)) {
-                            Text(text = "Name: ${countries[index].name.common}")
-                            Text(text = "Capital: ${countries[index].capital?.get(0).toString()}")
+                            Text(text = "Name: ${countries[index].commonName}")
+                            Text(text = "Capital: ${countries[index].mainCapital}")
                         }
                         AnimatedStar(
                             onFavoriteTap = onFavoriteTap,
@@ -181,11 +179,11 @@ fun PreviewCountryList() {
     CountryList(
         countries = listOf(
             Country(
-                name = CountryName(common = "United States of America"),
-                capital = listOf("Washington, D.C."),
+                commonName = "United States of America",
+                mainCapital = "Washington, D.C.",
                 population = 331449281,
-                area = 9833520.0,
-                flags = CountryFlags("")
+                area = 9833520.0F,
+                flagUrl = ("")
             )
         ),
         onRefreshTap = {},

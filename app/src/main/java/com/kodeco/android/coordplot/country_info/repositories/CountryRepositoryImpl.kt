@@ -1,6 +1,6 @@
 package com.kodeco.android.coordplot.country_info.repositories
 
-import com.kodeco.android.coordplot.country_info.model.Country
+import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.networking.ApiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +23,7 @@ class CountryRepositoryImpl(private val apiService: ApiService) :
                 countriesResponse.body()!!
                     .toMutableList()
                     .map { country ->
-                        country.copy(isFavorite = favorites.contains(country.name.common))
+                        country.copy(isFavorite = favorites.contains(country.commonName))
                     }
             } else {
                 throw Throwable("Request failed: ${countriesResponse.message()}")
@@ -36,16 +36,16 @@ class CountryRepositoryImpl(private val apiService: ApiService) :
     override fun getCountry(countryIndex: Int): Country? =
         _countries.value.getOrNull(countryIndex)
 
-    override fun favorite(country: Country) {
-        favorites = if (favorites.contains(country.name.common)) {
-            favorites - country.name.common
+    override suspend fun favorite(country: Country) {
+        favorites = if (favorites.contains(country.commonName)) {
+            favorites - country.commonName
         } else {
-            favorites + country.name.common
+            favorites + country.commonName
         }
         val index = _countries.value.indexOf(country)
         val mutableCountries = _countries.value.toMutableList()
         mutableCountries[index] =
-            mutableCountries[index].copy(isFavorite = favorites.contains(country.name.common))
+            mutableCountries[index].copy(isFavorite = favorites.contains(country.commonName))
         _countries.value = mutableCountries.toList()
     }
 }
