@@ -1,49 +1,51 @@
 package com.kodeco.android.coordplot.country_info.repositories
 
-import android.util.Log
 import com.kodeco.android.coordplot.country_info.model.Country
 import com.kodeco.android.coordplot.country_info.networking.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class CountryRepositoryImpl(private val apiService: ApiService) :
     CountryRepository {
-    private val TAG = CountryRepositoryImpl::class.java.simpleName
-    private var countries = listOf<Country>()
 
-    override suspend fun fetchCountries(refreshNeeded: Boolean): Flow<List<Country>> {
-        if (!refreshNeeded && countries.isNotEmpty()) {
-            return flow {
-                emit(countries)
-            }
-        }
-        delay(3000)
-        return flow {
-            val countriesResponse = apiService.getAllCountries()
+    private var favorites = setOf<String>()
 
-            if (countriesResponse.isSuccessful && countriesResponse.body() != null) {
-                val countryList = countriesResponse.body()?.toList() ?: emptyList()
-                emit(countryList)
-                countries = countryList
+    private val _countries: MutableStateFlow<List<Country>> = MutableStateFlow(emptyList())
+    override val countries: StateFlow<List<Country>> = _countries.asStateFlow()
+
+    override suspend fun fetchCountries() {
+        val countriesResponse = apiService.getAllCountries()
+
+        _countries.value = emptyList()
+        _countries.value = try {
+            if (countriesResponse.isSuccessful) {
+                countriesResponse.body()!!
+                    .toMutableList()
+                    .map { country ->
+                        country.copy(isFavorite = favorites.contains(country.name.common))
+                    }
             } else {
-                Log.e(TAG, "Error: ${countriesResponse.message()}")
-                emit(emptyList())
-                countries = emptyList()
+                throw Throwable("Request failed: ${countriesResponse.message()}")
             }
-        }.catch { exception ->
-            Log.e(TAG, "Error: ${exception.message}")
-            emit(emptyList())
-            countries = emptyList()
-        }.flowOn(Dispatchers.IO)
+        } catch (e: Exception) {
+            throw Throwable("Request failed: ${e.message}")
+        }
     }
 
-    override fun getCountry(countryIndex: Int): Country? {
-        return countries.getOrNull(countryIndex)
+    override fun getCountry(countryIndex: Int): Country? =
+        _countries.value.getOrNull(countryIndex)
+
+    override fun favorite(country: Country) {
+        favorites = if (favorites.contains(country.name.common)) {
+            favorites - country.name.common
+        } else {
+            favorites + country.name.common
+        }
+        val index = _countries.value.indexOf(country)
+        val mutableCountries = _countries.value.toMutableList()
+        mutableCountries[index] =
+            mutableCountries[index].copy(isFavorite = favorites.contains(country.name.common))
+        _countries.value = mutableCountries.toList()
     }
 }

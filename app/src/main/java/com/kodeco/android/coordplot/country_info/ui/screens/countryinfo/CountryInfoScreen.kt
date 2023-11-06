@@ -1,12 +1,19 @@
 package com.kodeco.android.coordplot.country_info.ui.screens.countryinfo
 
+import android.widget.Toast
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.ui.components.CountryList
@@ -19,31 +26,56 @@ fun CountryInfoScreen(
     onCountryRowTap: (Int) -> Unit,
     onAboutTap: () -> Unit
 ) {
-    val state = viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
-    when (state.value) {
-        is CountryInfoState.Success -> {
-            CountryList(
-                countries = (state.value as CountryInfoState.Success).countryList,
-                onRefreshTap = { viewModel.fetchCountryList(true) },
-                onCountryRowTap = { countryIndex ->
-                    onCountryRowTap(countryIndex)
-                },
-                onAboutTap = { onAboutTap() }
-            )
-        }
+    val transition = updateTransition(
+        targetState = state,
+        label = "list_state_transition",
+    )
 
-        is CountryInfoState.Failure -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = stringResource(R.string.oops_something_is_not_right))
+    transition.Crossfade(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentKey = { it.javaClass },
+        animationSpec = tween(600)
+    ) { state ->
+        when (state) {
+            is CountryInfoState.Success -> {
+                CountryList(
+                    countries = state.countryList,
+                    onRefreshTap = { viewModel.fetchCountryList() },
+                    onCountryRowTap = { countryIndex ->
+                        onCountryRowTap(countryIndex)
+                    },
+                    onAboutTap = { onAboutTap() },
+                    onFavoriteTap = { countryIndex ->
+                        val country = viewModel.getCountryById(countryIndex)
+                        if (country != null) {
+                            viewModel.favorite(country)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Sorry. Can't favorite this country.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                )
             }
-        }
 
-        CountryInfoState.Loading -> {
-            LoadingScreen(countryInfoViewModel = viewModel)
+            is CountryInfoState.Error -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = stringResource(R.string.oops_something_is_not_right))
+                }
+            }
+
+            CountryInfoState.Loading -> {
+                LoadingScreen()
+            }
         }
     }
 }
