@@ -1,13 +1,17 @@
 package com.kodeco.android.coordplot.country_info.repositories
 
+import android.util.Log
+import com.kodeco.android.coordplot.country_info.database.dao.CountryDao
 import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.networking.ApiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CountryRepositoryImpl(private val apiService: ApiService) :
-    CountryRepository {
+class CountryRepositoryImpl(
+    private val apiService: ApiService,
+    private val countryDao: CountryDao
+) : CountryRepository {
 
     private var favorites = setOf<String>()
 
@@ -15,11 +19,11 @@ class CountryRepositoryImpl(private val apiService: ApiService) :
     override val countries: StateFlow<List<Country>> = _countries.asStateFlow()
 
     override suspend fun fetchCountries() {
-        val countriesResponse = apiService.getAllCountries()
+        try {
+            val countriesResponse = apiService.getAllCountries()
 
-        _countries.value = emptyList()
-        _countries.value = try {
-            if (countriesResponse.isSuccessful) {
+            _countries.value = emptyList()
+            _countries.value = if (countriesResponse.isSuccessful) {
                 countriesResponse.body()!!
                     .toMutableList()
                     .map { country ->
@@ -28,8 +32,21 @@ class CountryRepositoryImpl(private val apiService: ApiService) :
             } else {
                 throw Throwable("Request failed: ${countriesResponse.message()}")
             }
+
+            // After fetching, update the local database
+            countryDao.insertAll(_countries.value)
+
         } catch (e: Exception) {
-            throw Throwable("Request failed: ${e.message}")
+            Log.e("CountryRepositoryImpl", "fetchCountries: ${e.message}")
+            // Handle exception (e.g., no internet connection)
+            // Fall back to local data if available
+            val localData = countryDao.getAllCountries()
+
+            if (localData.isNotEmpty()) {
+                _countries.value = localData
+            } else {
+                throw Throwable("Request failed: ${e.message}")
+            }
         }
     }
 
@@ -42,6 +59,10 @@ class CountryRepositoryImpl(private val apiService: ApiService) :
         } else {
             favorites + country.commonName
         }
+
+        // Update local database
+        countryDao.updateFavorite(country.commonName, favorites.contains(country.commonName))
+
         val index = _countries.value.indexOf(country)
         val mutableCountries = _countries.value.toMutableList()
         mutableCountries[index] =
