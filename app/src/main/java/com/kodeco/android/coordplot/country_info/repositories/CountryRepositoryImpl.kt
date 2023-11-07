@@ -34,7 +34,7 @@ class CountryRepositoryImpl(
             }
 
             // After fetching, update the local database
-            countryDao.insertAll(_countries.value)
+            countryDao.insertAllCountries(_countries.value)
 
         } catch (e: Exception) {
             Log.e("CountryRepositoryImpl", "fetchCountries: ${e.message}")

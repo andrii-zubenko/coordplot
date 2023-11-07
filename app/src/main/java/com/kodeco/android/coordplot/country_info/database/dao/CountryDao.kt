@@ -15,7 +15,7 @@ interface CountryDao {
     suspend fun getAllCountries(): List<Country>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(countries: List<Country>)
+    suspend fun insertAllCountries(countries: List<Country>)
 
     @Query("UPDATE countries SET isFavorite = :isFavorite WHERE commonName = :commonName")
     suspend fun updateFavorite(commonName: String, isFavorite: Boolean)
