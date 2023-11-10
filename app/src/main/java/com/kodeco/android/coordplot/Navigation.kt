@@ -12,9 +12,9 @@ import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import com.kodeco.android.coordplot.country_info.ui.screens.aboutscreen.AboutScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsViewModelFactory
-import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoScreen
-import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoViewModel
-import com.kodeco.android.coordplot.country_info.ui.screens.countryinfo.CountryInfoViewModelFactory
+import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryInfoScreen
+import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryListViewModel
+import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryListModelFactory
 
 @Composable
 fun Navigation(
@@ -23,21 +23,21 @@ fun Navigation(
     val configuration = LocalConfiguration.current
     val navController = rememberNavController()
 
-    val countryInfoViewModel: CountryInfoViewModel = viewModel(
-        factory = CountryInfoViewModelFactory(repository = repository)
+    val countryInfoViewModel: CountryListViewModel = viewModel(
+        factory = CountryListModelFactory(repository = repository)
     )
 
     NavHost(navController = navController, startDestination = MainScreen.route) {
         composable(MainScreen.route) {
             MainScreen(
                 onNavigateToCoordPlot = { navController.navigate(CoordPlot.route) },
-                onNavigateToCountryInfo = { navController.navigate(CountryInfo.route) }
+                onNavigateToCountryInfo = { navController.navigate(CountryList.route) }
             )
         }
         composable(CoordPlot.route) {
             PlotSurface(configuration.orientation)
         }
-        composable(CountryInfo.route) {
+        composable(CountryList.route) {
             CountryInfoScreen(
                 viewModel = countryInfoViewModel,
                 onCountryRowTap = { countryIndex ->

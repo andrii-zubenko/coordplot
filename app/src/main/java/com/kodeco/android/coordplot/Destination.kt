@@ -15,8 +15,8 @@ object CoordPlot : Destination {
     override val route = "coord_plot"
 }
 
-object CountryInfo : Destination {
-    override val route = "country_info"
+object CountryList : Destination {
+    override val route = "country_list"
 }
 
 object CountryDetails : Destination {

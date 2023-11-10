@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Help
@@ -35,9 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
-import com.kodeco.android.coordplot.country_info.model.Country
-import com.kodeco.android.coordplot.country_info.model.CountryFlags
-import com.kodeco.android.coordplot.country_info.model.CountryName
+import com.kodeco.android.coordplot.country_info.models.Country
 
 @Composable
 fun CountryList(
@@ -45,7 +44,7 @@ fun CountryList(
     onRefreshTap: () -> Unit,
     onCountryRowTap: (Int) -> Unit,
     onAboutTap: () -> Unit,
-    onFavoriteTap: (Int) -> Unit
+    onFavoriteTap: (country: Country) -> Unit
 ) {
     Column {
         Column {
@@ -80,7 +79,7 @@ fun CountryList(
             }
         }
         LazyColumn {
-            items(countries.size) { index ->
+            itemsIndexed(countries) { index, country ->
                 Card(
                     modifier = Modifier
                         .padding(
@@ -96,13 +95,12 @@ fun CountryList(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(modifier = Modifier.padding(all = 8.dp)) {
-                            Text(text = "Name: ${countries[index].name.common}")
-                            Text(text = "Capital: ${countries[index].capital?.get(0).toString()}")
+                            Text(text = "Name: ${countries[index].commonName}")
+                            Text(text = "Capital: ${countries[index].mainCapital}")
                         }
                         AnimatedStar(
                             onFavoriteTap = onFavoriteTap,
-                            countryIndex = index,
-                            isCountryFavorite = countries[index].isFavorite
+                            country = country
                         )
                     }
                 }
@@ -117,11 +115,10 @@ enum class StarState {
 
 @Composable
 fun AnimatedStar(
-    onFavoriteTap: (Int) -> Unit,
-    countryIndex: Int,
-    isCountryFavorite: Boolean = false
+    onFavoriteTap: (country: Country) -> Unit,
+    country: Country
 ) {
-    val starState = if (isCountryFavorite) {
+    val starState = if (country.isFavorite) {
         remember { mutableStateOf(StarState.Filled) }
     } else {
         remember { mutableStateOf(StarState.Empty) }
@@ -142,7 +139,7 @@ fun AnimatedStar(
                     StarState.Filled -> StarState.Empty
                     StarState.Empty -> StarState.Filled
                 }
-                onFavoriteTap(countryIndex)
+                onFavoriteTap(country)
             }
             .padding(16.dp)
 
@@ -181,11 +178,11 @@ fun PreviewCountryList() {
     CountryList(
         countries = listOf(
             Country(
-                name = CountryName(common = "United States of America"),
-                capital = listOf("Washington, D.C."),
+                commonName = "United States of America",
+                mainCapital = "Washington, D.C.",
                 population = 331449281,
-                area = 9833520.0,
-                flags = CountryFlags("")
+                area = 9833520.0F,
+                flagUrl = ("")
             )
         ),
         onRefreshTap = {},
