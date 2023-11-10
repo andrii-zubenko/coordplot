@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.kodeco.android.coordplot.country_info.models.Country
 
 @Dao
@@ -15,8 +16,11 @@ interface CountryDao {
     suspend fun getAllCountries(): List<Country>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllCountries(countries: List<Country>)
+    suspend fun insertAllCountries(vararg country: Country)
 
-    @Query("UPDATE countries SET isFavorite = :isFavorite WHERE commonName = :commonName")
-    suspend fun updateFavorite(commonName: String, isFavorite: Boolean)
+    @Update
+    suspend fun updateFavorite(country: Country)
+
+    @Query("DELETE FROM countries")
+    suspend fun deleteAllCountries()
 }
