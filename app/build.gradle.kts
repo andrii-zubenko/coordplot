@@ -95,6 +95,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
+    implementation(libs.prefs)
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.test.ext.junit)

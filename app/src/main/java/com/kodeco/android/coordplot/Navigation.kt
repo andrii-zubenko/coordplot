@@ -12,9 +12,10 @@ import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import com.kodeco.android.coordplot.country_info.ui.screens.aboutscreen.AboutScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrydetails.CountryDetailsViewModelFactory
-import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryInfoScreen
+import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryListScreen
 import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryListViewModel
 import com.kodeco.android.coordplot.country_info.ui.screens.countrylist.CountryListModelFactory
+import com.kodeco.android.coordplot.country_info.ui.screens.settingsscreen.SettingsScreen
 
 @Composable
 fun Navigation(
@@ -38,12 +39,13 @@ fun Navigation(
             PlotSurface(configuration.orientation)
         }
         composable(CountryList.route) {
-            CountryInfoScreen(
+            CountryListScreen(
                 viewModel = countryInfoViewModel,
                 onCountryRowTap = { countryIndex ->
                     navController.navigateToSingleCountry(countryIndex)
                 },
-                onAboutTap = { navController.navigate(AboutScreen.route) }
+                onAboutTap = { navController.navigate(AboutScreen.route) },
+                onSettingsTap = { navController.navigate(SettingsScreen.route) }
             )
         }
         composable(
@@ -63,6 +65,9 @@ fun Navigation(
         }
         composable(AboutScreen.route) {
             AboutScreen(onBackTap = { navController.navigateUp() })
+        }
+        composable(SettingsScreen.route) {
+            SettingsScreen(onBackTap = { navController.navigateUp() })
         }
     }
 }

@@ -18,10 +18,11 @@ import com.kodeco.android.coordplot.country_info.networking.CountryListState
 import com.kodeco.android.coordplot.country_info.ui.components.LoadingScreen
 
 @Composable
-fun CountryInfoScreen(
+fun CountryListScreen(
     viewModel: CountryListViewModel,
     onCountryRowTap: (Int) -> Unit,
-    onAboutTap: () -> Unit
+    onAboutTap: () -> Unit,
+    onSettingsTap: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -43,7 +44,8 @@ fun CountryInfoScreen(
                     onRefreshTap = viewModel::fetchCountryList,
                     onCountryRowTap = onCountryRowTap,
                     onAboutTap = { onAboutTap() },
-                    onFavoriteTap = viewModel::favorite
+                    onFavoriteTap = viewModel::favorite,
+                    onSettingsTap = { onSettingsTap() }
                 )
             }
 
