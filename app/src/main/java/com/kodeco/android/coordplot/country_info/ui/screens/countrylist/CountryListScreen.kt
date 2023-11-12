@@ -16,13 +16,15 @@ import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.ui.components.CountryList
 import com.kodeco.android.coordplot.country_info.networking.CountryListState
 import com.kodeco.android.coordplot.country_info.ui.components.LoadingScreen
+import com.kodeco.android.coordplot.country_info.ui.screens.settingsscreen.SettingsScreenViewModel
 
 @Composable
 fun CountryListScreen(
     viewModel: CountryListViewModel,
     onCountryRowTap: (Int) -> Unit,
     onAboutTap: () -> Unit,
-    onSettingsTap: () -> Unit
+    onSettingsTap: () -> Unit,
+    settingsScreenViewModel: SettingsScreenViewModel
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -45,7 +47,8 @@ fun CountryListScreen(
                     onCountryRowTap = onCountryRowTap,
                     onAboutTap = { onAboutTap() },
                     onFavoriteTap = viewModel::favorite,
-                    onSettingsTap = { onSettingsTap() }
+                    onSettingsTap = { onSettingsTap() },
+                    settingsScreenViewModel = settingsScreenViewModel
                 )
             }
 

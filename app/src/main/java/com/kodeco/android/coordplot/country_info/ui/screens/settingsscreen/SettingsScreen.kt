@@ -15,6 +15,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,9 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kodeco.android.coordplot.R
+import com.kodeco.android.coordplot.country_info.prefdatastore.CountryPrefs
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun SettingsScreen(onBackTap: () -> Unit) {
+fun SettingsScreen(viewModel: SettingsScreenViewModel, onBackTap: () -> Unit) {
+    val localStorageEnabledState = viewModel.localStorageEnabled.collectAsState()
+    val favoritesFeatureEnabledState = viewModel.favoritesFeatureEnabled.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,15 +53,26 @@ fun SettingsScreen(onBackTap: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            FeatureToggle(toggleName = stringResource(R.string.enable_local_storage))
-            FeatureToggle(toggleName = stringResource(R.string.enable_favorites_feature))
-            FeatureToggle(toggleName = stringResource(R.string.enable_screen_rotation))
+            FeatureToggle(toggleName = stringResource(R.string.enable_local_storage),
+                checked = localStorageEnabledState.value,
+                onCheckedChange = {
+                    viewModel.toggleLocalStorage()
+                })
+            FeatureToggle(toggleName = stringResource(R.string.enable_favorites_feature),
+                checked = favoritesFeatureEnabledState.value,
+                onCheckedChange = {
+                    viewModel.toggleFavoritesFeature()
+                })
         }
     }
 }
 
 @Composable
-fun FeatureToggle(toggleName: String) {
+fun FeatureToggle(
+    toggleName: String,
+    checked: Boolean = true,
+    onCheckedChange: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,8 +88,10 @@ fun FeatureToggle(toggleName: String) {
             fontSize = 22.sp
         )
         Switch(
-            checked = true,
-            onCheckedChange = {}
+            checked = checked,
+            onCheckedChange = {
+                onCheckedChange()
+            }
         )
     }
 }
@@ -80,5 +99,26 @@ fun FeatureToggle(toggleName: String) {
 @Preview
 @Composable
 fun SettingsScreenPreview() {
-    SettingsScreen(onBackTap = {})
+    SettingsScreen(
+        onBackTap = {},
+        viewModel = SettingsScreenViewModel(
+            prefs = object : CountryPrefs {
+                override fun getLocalStorageEnabled(): Flow<Boolean> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun getFavoritesFeatureEnabled(): Flow<Boolean> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun toggleLocalStorage() {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun toggleFavoritesFeature() {
+                    TODO("Not yet implemented")
+                }
+            }
+        )
+    )
 }
