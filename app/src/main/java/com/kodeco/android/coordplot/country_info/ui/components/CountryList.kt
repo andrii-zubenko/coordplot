@@ -84,18 +84,7 @@ fun CountryList(
                     )
                 }
             }
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {
-                        onRefreshTap()
-                    }
-                ) {
-                    Text(text = stringResource(R.string.refresh))
-                }
-            }
+            RefreshButton(onRefreshTap = onRefreshTap)
         }
         LazyColumn {
             itemsIndexed(countries) { index, country ->

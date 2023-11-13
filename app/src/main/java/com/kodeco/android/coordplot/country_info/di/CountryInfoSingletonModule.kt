@@ -48,7 +48,8 @@ class CountryInfoSingletonModule {
     fun providesCountryRepository(
         service: CountryService,
         database: CountryInfoDatabase,
-    ): CountryRepository = CountryRepositoryImpl(service, database.countryDao())
+        prefs: CountryPrefs
+    ): CountryRepository = CountryRepositoryImpl(service, database.countryDao(), prefs)
 
     @Provides
     @Singleton

@@ -4,19 +4,30 @@ package com.kodeco.android.coordplot.country_info.repositories
 import com.kodeco.android.coordplot.country_info.database.dao.CountryDao
 import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.networking.CountryService
+import com.kodeco.android.coordplot.country_info.prefdatastore.CountryPrefs
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class CountryRepositoryImpl(
     private val apiService: CountryService,
     private val countryDao: CountryDao,
+    private val prefs: CountryPrefs
 ) : CountryRepository {
 
     private val _countries: MutableStateFlow<List<Country>> = MutableStateFlow(emptyList())
     override val countries: StateFlow<List<Country>> = _countries.asStateFlow()
 
     private val _localStorageEnabled = MutableStateFlow(true)
+    init {
+        GlobalScope.launch {
+            prefs.getLocalStorageEnabled().collect { enabled ->
+                _localStorageEnabled.value = enabled
+            }
+        }
+    }
 
     override suspend fun fetchCountries() {
         val favorites = if (_localStorageEnabled.value) {
@@ -44,12 +55,13 @@ class CountryRepositoryImpl(
                 }
                 countries
             } else {
-                throw Throwable("Request failed: ${countriesResponse.errorBody()}")
+                throw Exception("Request failed: ${countriesResponse.errorBody()}")
             }
         } catch (e: Exception) {
             if (_localStorageEnabled.value) {
                 _countries.value = countryDao.getAllCountries()
             }
+            throw Exception("Request failed: ${e.message}")
         }
     }
 

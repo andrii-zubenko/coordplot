@@ -3,8 +3,11 @@ package com.kodeco.android.coordplot.country_info.ui.screens.countrylist
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,10 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.ui.components.CountryList
 import com.kodeco.android.coordplot.country_info.networking.CountryListState
 import com.kodeco.android.coordplot.country_info.ui.components.LoadingScreen
+import com.kodeco.android.coordplot.country_info.ui.components.RefreshButton
 import com.kodeco.android.coordplot.country_info.ui.screens.settingsscreen.SettingsScreenViewModel
 
 @Composable
@@ -53,11 +58,18 @@ fun CountryListScreen(
             }
 
             is CountryListState.Error -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Text(text = stringResource(R.string.oops_something_is_not_right))
+                    RefreshButton(onRefreshTap = viewModel::fetchCountryList)
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center)
+                    {
+                        Text(text = stringResource(R.string.oops_something_is_not_right))
+                    }
                 }
             }
 

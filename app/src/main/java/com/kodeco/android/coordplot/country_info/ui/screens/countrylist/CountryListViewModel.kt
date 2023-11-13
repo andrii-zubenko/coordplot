@@ -41,7 +41,11 @@ class CountryListViewModel@Inject constructor(
 
         viewModelScope.launch {
             delay(1000)
-            repository.fetchCountries()
+            try {
+                repository.fetchCountries()
+            } catch (e: Exception) {
+                _uiState.value = CountryListState.Error(e)
+            }
         }
     }
 
