@@ -15,4 +15,4 @@ val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .build()
 
-val apiService: ApiService = retrofit.create(ApiService::class.java)
+val apiService: CountryService = retrofit.create(CountryService::class.java)

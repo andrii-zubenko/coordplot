@@ -31,3 +31,7 @@ object CountryDetails : Destination {
 object AboutScreen : Destination {
     override val route = "about_screen"
 }
+
+object SettingsScreen : Destination {
+    override val route = "settings_screen"
+}

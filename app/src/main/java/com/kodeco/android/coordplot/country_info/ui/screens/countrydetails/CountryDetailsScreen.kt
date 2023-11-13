@@ -23,12 +23,15 @@ import com.kodeco.android.coordplot.country_info.models.Country
 import com.kodeco.android.coordplot.country_info.ui.components.DetailItem
 import com.kodeco.android.coordplot.country_info.repositories.CountryRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun CountryDetailsScreen(
     onBackTap: () -> Unit,
     viewModel: CountryDetailsViewModel,
+    countryIndex: Int
 ) {
+    viewModel.getSelectedCountry(countryIndex)
     Column {
         Scaffold(
             topBar = {
@@ -83,33 +86,26 @@ fun CountryDetailsScreen(
 fun CountryDetailsScreenPreview() {
 
     val testCountry = Country(
-        commonName =  "United States of America",
+        commonName = "United States of America",
         mainCapital = "Washington, D.C.",
         population = 331449281,
         area = 9833520.0F,
         flagUrl = ""
     )
 
-    val testRepository = object : CountryRepository {
-        override val countries: Flow<List<Country>>
-            get() = TODO("Not yet implemented")
-
-        override suspend fun fetchCountries() {
-            TODO("Not yet implemented")
-        }
-
-        override fun getCountry(countryIndex: Int): Country? {
-            return testCountry
-        }
-
-        override suspend fun favorite(country: Country) {
-            TODO("Not yet implemented")
-        }
-
-    }
-
     CountryDetailsScreen(
         onBackTap = {},
-        viewModel = CountryDetailsViewModel(0, testRepository)
+        viewModel = CountryDetailsViewModel(
+            repository = object : CountryRepository {
+                override val countries: Flow<List<Country>> = MutableStateFlow(listOf(testCountry))
+
+                override suspend fun fetchCountries() {}
+
+                override fun getCountry(index: Int): Country = testCountry
+
+                override suspend fun favorite(country: Country) {}
+            },
+        ),
+        countryIndex = 0
     )
 }

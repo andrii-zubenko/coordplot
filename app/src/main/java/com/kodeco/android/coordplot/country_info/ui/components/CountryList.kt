@@ -20,11 +20,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Help
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.coordplot.R
 import com.kodeco.android.coordplot.country_info.models.Country
+import com.kodeco.android.coordplot.country_info.prefdatastore.CountryPrefs
+import com.kodeco.android.coordplot.country_info.ui.screens.settingsscreen.SettingsScreenViewModel
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun CountryList(
@@ -44,8 +49,13 @@ fun CountryList(
     onRefreshTap: () -> Unit,
     onCountryRowTap: (Int) -> Unit,
     onAboutTap: () -> Unit,
-    onFavoriteTap: (country: Country) -> Unit
+    onFavoriteTap: (country: Country) -> Unit,
+    onSettingsTap: () -> Unit,
+    settingsScreenViewModel: SettingsScreenViewModel
 ) {
+    val favoritesFeatureEnabledState =
+        settingsScreenViewModel.favoritesFeatureEnabled.collectAsState()
+
     Column {
         Column {
             Row(
@@ -59,24 +69,22 @@ fun CountryList(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(R.string.country_info))
-                Icon(
-                    Icons.Rounded.Help,
-                    contentDescription = stringResource(R.string.about),
-                    modifier = Modifier.clickable { onAboutTap() }
-                )
-            }
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {
-                        onRefreshTap()
-                    }
-                ) {
-                    Text(text = stringResource(R.string.refresh))
+                Row {
+                    Icon(Icons.Rounded.Settings,
+                        contentDescription = stringResource(R.string.settings),
+                        modifier = Modifier
+                            .clickable { onSettingsTap() }
+                            .padding(end = 8.dp))
+                    Icon(
+                        Icons.Rounded.Help,
+                        contentDescription = stringResource(R.string.about),
+                        modifier = Modifier
+                            .clickable { onAboutTap() }
+                            .padding(start = 8.dp)
+                    )
                 }
             }
+            RefreshButton(onRefreshTap = onRefreshTap)
         }
         LazyColumn {
             itemsIndexed(countries) { index, country ->
@@ -98,10 +106,12 @@ fun CountryList(
                             Text(text = "Name: ${countries[index].commonName}")
                             Text(text = "Capital: ${countries[index].mainCapital}")
                         }
-                        AnimatedStar(
-                            onFavoriteTap = onFavoriteTap,
-                            country = country
-                        )
+                        if (favoritesFeatureEnabledState.value) {
+                            AnimatedStar(
+                                onFavoriteTap = onFavoriteTap,
+                                country = country
+                            )
+                        }
                     }
                 }
             }
@@ -188,6 +198,26 @@ fun PreviewCountryList() {
         onRefreshTap = {},
         onCountryRowTap = {},
         onAboutTap = {},
-        onFavoriteTap = {}
+        onFavoriteTap = {},
+        onSettingsTap = {},
+        settingsScreenViewModel = SettingsScreenViewModel(
+            prefs = object : CountryPrefs {
+                override fun getLocalStorageEnabled(): Flow<Boolean> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun getFavoritesFeatureEnabled(): Flow<Boolean> {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun toggleLocalStorage() {
+                    TODO("Not yet implemented")
+                }
+
+                override suspend fun toggleFavoritesFeature() {
+                    TODO("Not yet implemented")
+                }
+            }
+        )
     )
 }
