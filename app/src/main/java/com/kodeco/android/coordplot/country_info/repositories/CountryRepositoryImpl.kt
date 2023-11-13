@@ -60,8 +60,9 @@ class CountryRepositoryImpl(
         } catch (e: Exception) {
             if (_localStorageEnabled.value) {
                 _countries.value = countryDao.getAllCountries()
+            } else {
+                throw Exception("Request failed: ${e.message}")
             }
-            throw Exception("Request failed: ${e.message}")
         }
     }
 
